@@ -3,47 +3,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icon-192.png" />
+  <link rel="apple-touch-icon" href="icon-512.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <title>PicSwift</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: white;
-      font-family: sans-serif;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-    img {
-      width: 100px;
-      height: 100px;
-      margin-bottom: 1rem;
-    }
-    .brand {
-      font-size: 2rem;
-      font-weight: bold;
-    }
-    .from {
-      font-size: 0.9rem;
-      color: gray;
-      margin-top: 0.5rem;
-    }
-  </style>
+  <link href="style.css" rel="stylesheet" />
 </head>
 <body>
-  <img src="icon-512.png" alt="PicSwift logo" />
-  <div class="brand">PicSwift</div>
-  <div class="from">from buildsangthing</div>
-  <script>
-    setTimeout(() => {
-      window.location.href = 'main.html';
-    }, 2000);
-  </script>
+  <main id="scrollContainer">
+    <div id="topBar">PicSwift</div>
+    <div id="gallery"></div>
+  </main>
+  <div id="bottomBar">
+    <input type="file" id="fileInput" multiple accept="image/*" hidden />
+    <button onclick="choosePhotos()">Choose Photos</button>
+    <button id="analyzeBtn" disabled>Analyze</button>
+  </div>
+  <script src="app.js"></script>
+  <script src="service-worker.js"></script>
 </body>
 </html>
