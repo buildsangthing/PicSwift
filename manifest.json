@@ -1,11 +1,7 @@
+
 {
   "name": "PicSwift",
   "short_name": "PicSwift",
-  "start_url": "/PicSwift/",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#ffffff",
-  "description": "Quickly sort and choose your best photos with PicSwift.",
   "icons": [
     {
       "src": "icon-192.png",
@@ -17,5 +13,9 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
+  ],
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000"
 }

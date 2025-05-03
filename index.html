@@ -1,17 +1,23 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon-192.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PicSwift</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="manifest" href="manifest.json" />
+  <link href="style.css" rel="stylesheet" />
 </head>
 <body>
-  <h1>PicSwift</h1>
-  <input type="file" multiple accept="image/*" id="photoInput" />
-  <div id="photoList"></div>
-
+  <div id="topBar">PicSwift</div>
+  <div id="gallery"></div>
+  <div id="bottomBar">
+    <input type="file" id="fileInput" multiple accept="image/*" hidden />
+    <button onclick="choosePhotos()">Choose Photos</button>
+    <button id="analyzeBtn" disabled>Analyze</button>
+  </div>
   <script src="app.js"></script>
+  <script src="service-worker.js"></script>
 </body>
 </html>
