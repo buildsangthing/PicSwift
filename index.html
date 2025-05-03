@@ -13,13 +13,14 @@
   <link href="style.css" rel="stylesheet" />
 </head>
 <body>
-  <main id="scrollContainer">
-    <div id="topBar">PicSwift</div>
-    <div id="gallery"></div>
-  </main>
-  <div id="bottomBar">
+  <div class="ios-statusbar-fix"></div>
+  <h1 class="title">PicSwift</h1>
+  <div class="controls">
     <input type="file" id="fileInput" multiple accept="image/*" hidden />
     <button onclick="choosePhotos()">Choose Photos</button>
+  </div>
+  <div id="gallery"></div>
+  <div class="controls">
     <button id="analyzeBtn" disabled>Analyze</button>
   </div>
   <script src="app.js"></script>
