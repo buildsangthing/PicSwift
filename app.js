@@ -1,34 +1,70 @@
 
-const gallery = document.getElementById("gallery");
-const fileInput = document.getElementById("fileInput");
-const analyzeBtn = document.getElementById("analyzeBtn");
-
 function choosePhotos() {
+  const fileInput = document.getElementById("fileInput");
   fileInput.click();
+  fileInput.onchange = () => {
+    const files = Array.from(fileInput.files);
+    const gallery = document.getElementById("gallery");
+    gallery.innerHTML = "";
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = document.createElement("img");
+        img.src = e.target.result;
+        gallery.appendChild(img);
+      };
+      reader.readAsDataURL(file);
+    });
+    document.getElementById("analyzeBtn").disabled = false;
+  };
 }
 
-fileInput.addEventListener("change", async (e) => {
-  const files = Array.from(e.target.files).slice(0, 15);
-  gallery.innerHTML = "";
-  if (files.length > 0) {
-    analyzeBtn.disabled = false;
-  }
-  for (const file of files) {
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const img = document.createElement("img");
-      img.src = event.target.result;
-      gallery.appendChild(img);
-    };
-    reader.readAsDataURL(file);
-  }
-});
+function analyzePhotos() {
+  const images = Array.from(document.querySelectorAll("#gallery img"));
 
-document.querySelector("body").addEventListener("scroll", () => {
-  const topBar = document.getElementById("topBar");
-  if (window.scrollY > 10) {
-    topBar.style.opacity = "0";
-  } else {
-    topBar.style.opacity = "1";
+  if (images.length === 0) {
+    alert("No images to analyze.");
+    return;
   }
-});
+
+  const scoredImages = images.map((img, index) => {
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    const width = 64;
+    const height = 64;
+    canvas.width = width;
+    canvas.height = height;
+
+    ctx.drawImage(img, 0, 0, width, height);
+    const imageData = ctx.getImageData(0, 0, width, height);
+    const pixels = imageData.data;
+
+    let sharpness = 0;
+    for (let i = 0; i < pixels.length - 4 * width; i += 4) {
+      const gray1 = 0.299 * pixels[i] + 0.587 * pixels[i+1] + 0.114 * pixels[i+2];
+      const gray2 = 0.299 * pixels[i + 4 * width] + 0.587 * pixels[i + 4 * width + 1] + 0.114 * pixels[i + 4 * width + 2];
+      sharpness += Math.abs(gray1 - gray2);
+    }
+
+    let brightness = 0;
+    for (let i = 0; i < pixels.length; i += 4) {
+      const avg = (pixels[i] + pixels[i+1] + pixels[i+2]) / 3;
+      brightness += avg;
+    }
+    brightness = brightness / (pixels.length / 4);
+
+    const score = sharpness * 0.7 + brightness * 0.3;
+
+    return { img, score };
+  });
+
+  scoredImages.sort((a, b) => b.score - a.score);
+
+  const gallery = document.getElementById("gallery");
+  gallery.innerHTML = "";
+  scoredImages.forEach(({ img }, idx) => {
+    const newImg = img.cloneNode(true);
+    newImg.setAttribute("title", `Rank #${idx + 1}`);
+    gallery.appendChild(newImg);
+  });
+}
